@@ -1162,6 +1162,8 @@ deleteCouriersButton.onclick = function() {
             let cameraIdToUse = cameraIdOverride || selectedCameraId;
             // Для iOS всегда environment, не переключаем на фронтальную
             if (isIOS()) {
+                console.log('Запрос доступа к камере (iOS): getUserMedia');
+                showMessage('info', 'Запрос доступа к камере (iOS)', '', '', '');
                 stream = await navigator.mediaDevices.getUserMedia({
                     video: {
                         facingMode: { ideal: "environment" },
@@ -1170,6 +1172,8 @@ deleteCouriersButton.onclick = function() {
                         aspectRatio: 1
                     }
                 });
+                console.log('Доступ к камере получен (iOS):', !!stream);
+                showMessage('info', 'Доступ к камере получен (iOS)', '', '', '');
             } else {
                 if (!cameraIdToUse) {
                     const devices = await navigator.mediaDevices.enumerateDevices();
@@ -1181,6 +1185,8 @@ deleteCouriersButton.onclick = function() {
                     cameraIdToUse = camera ? camera.deviceId : null;
                 }
                 if (cameraIdToUse) {
+                    console.log('Запрос доступа к камере: getUserMedia, cameraIdToUse:', cameraIdToUse);
+                    showMessage('info', 'Запрос доступа к камере', '', '', '');
                     stream = await navigator.mediaDevices.getUserMedia({
                         video: {
                             deviceId: { exact: cameraIdToUse },
@@ -1190,6 +1196,8 @@ deleteCouriersButton.onclick = function() {
                             aspectRatio: 1
                         }
                     });
+                    console.log('Доступ к камере получен:', !!stream);
+                    showMessage('info', 'Доступ к камере получен', '', '', '');
                 } else {
                     showMessage('error', 'Камеры не найдены на устройстве', '', '', '');
                     showAllQrIcons();Ы
